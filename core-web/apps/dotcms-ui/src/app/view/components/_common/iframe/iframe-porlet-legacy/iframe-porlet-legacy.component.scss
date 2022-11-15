@@ -1,11 +1,9 @@
 @use "variables" as *;
 
-$iframe-margin: $spacing-4;
-
 :host {
     background-color: $gray-bg;
     display: block;
-    padding: $iframe-margin;
+
     height: 100%;
 }
 
