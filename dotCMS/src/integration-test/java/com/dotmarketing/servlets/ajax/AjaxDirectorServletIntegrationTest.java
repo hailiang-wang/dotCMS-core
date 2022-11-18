@@ -1,11 +1,9 @@
 package com.dotmarketing.servlets.ajax;
 
-import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.nullable;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -14,7 +12,6 @@ import com.dotcms.publisher.business.DotPublisherException;
 import com.dotcms.publisher.business.PublishQueueElement;
 import com.dotcms.publisher.business.PublisherAPI;
 import com.dotcms.publisher.environment.bean.Environment;
-import com.dotcms.publishing.FilterDescriptor;
 import com.dotcms.rest.InitDataObject;
 import com.dotcms.rest.WebResource;
 import com.dotcms.util.IntegrationTestInitService;
@@ -38,7 +35,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.servlet.ServletException;
@@ -219,7 +215,7 @@ public class AjaxDirectorServletIntegrationTest {
         final InitDataObject dataObject = mock(InitDataObject.class);
         when(dataObject.getUser()).thenReturn(APILocator.systemUser());
         when(webResource.init(nullable(String.class), anyBoolean(), any(HttpServletRequest.class),
-                anyBoolean(), anyObject()))
+                anyBoolean(), any(String.class)))
                 .thenReturn(dataObject);
 
         final AjaxDirectorServlet ajaxDirectorServlet = new AjaxDirectorServlet(webResource);

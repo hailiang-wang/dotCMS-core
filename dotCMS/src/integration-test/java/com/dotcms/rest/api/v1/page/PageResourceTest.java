@@ -64,7 +64,7 @@ import java.util.stream.Collectors;
 
 import static com.dotcms.util.CollectionsUtils.list;
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
@@ -144,7 +144,7 @@ public class PageResourceTest {
                     attributes.put(key, value);
                 }
                 return null;
-        }).when(request).setAttribute(Mockito.anyString(), Mockito.anyObject());
+        }).when(request).setAttribute(Mockito.anyString(), Mockito.any(Object.class));
 
 
         Folder aboutUs = APILocator.getFolderAPI().findFolderByPath(String.format("/%s/",folderName), host, APILocator.systemUser(), false);
