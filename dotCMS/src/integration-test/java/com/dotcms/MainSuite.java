@@ -1,6 +1,8 @@
 package com.dotcms;
 
 import com.dotcms.analytics.bayesian.BayesianAPIImplTest;
+import com.dotcms.auth.providers.jwt.JsonWebTokenUtilsIntegrationTest;
+import com.dotcms.auth.providers.jwt.factories.ApiTokenAPITest;
 import com.dotcms.auth.providers.saml.v1.DotSamlResourceTest;
 import com.dotcms.auth.providers.saml.v1.SAMLHelperTest;
 import com.dotcms.cache.lettuce.DotObjectCodecTest;
@@ -8,6 +10,7 @@ import com.dotcms.cache.lettuce.LettuceCacheTest;
 import com.dotcms.cache.lettuce.RedisClientTest;
 import com.dotcms.content.business.ObjectMapperTest;
 import com.dotcms.content.business.json.ContentletJsonAPITest;
+import com.dotcms.content.elasticsearch.business.ESContentFactoryImplTest;
 import com.dotcms.content.elasticsearch.business.ESContentletAPIImplTest;
 import com.dotcms.content.elasticsearch.business.ESIndexAPITest;
 import com.dotcms.content.elasticsearch.business.ElasticsearchUtilTest;
@@ -15,6 +18,7 @@ import com.dotcms.content.elasticsearch.util.ESMappingUtilHelperTest;
 import com.dotcms.content.model.hydration.MetadataDelegateTest;
 import com.dotcms.contenttype.business.ContentTypeInitializerTest;
 import com.dotcms.contenttype.business.DotAssetBaseTypeToContentTypeStrategyImplTest;
+import com.dotcms.contenttype.business.StoryBlockAPITest;
 import com.dotcms.contenttype.test.DotAssetAPITest;
 import com.dotcms.csspreproc.CSSCacheTest;
 import com.dotcms.csspreproc.CSSPreProcessServletTest;
@@ -42,6 +46,8 @@ import com.dotcms.enterprise.publishing.staticpublishing.AWSS3PublisherTest;
 import com.dotcms.enterprise.publishing.staticpublishing.LanguageFolderTest;
 import com.dotcms.enterprise.publishing.staticpublishing.StaticPublisherIntegrationTest;
 import com.dotcms.enterprise.rules.RulesAPIImplIntegrationTest;
+import com.dotcms.experiments.business.ExperimentAPIImpIT;
+import com.dotcms.experiments.business.web.ExperimentWebAPIImplIT;
 import com.dotcms.filters.interceptor.meta.MetaWebInterceptorTest;
 import com.dotcms.graphql.DotGraphQLHttpServletTest;
 import com.dotcms.integritycheckers.HostIntegrityCheckerTest;
@@ -63,6 +69,7 @@ import com.dotcms.publishing.job.SiteSearchJobImplTest;
 import com.dotcms.publishing.manifest.CSVManifestBuilderTest;
 import com.dotcms.publishing.manifest.CSVManifestReaderTest;
 import com.dotcms.publishing.manifest.ManifestReaderFactoryTest;
+import com.dotcms.publishing.manifest.ManifestUtilTest;
 import com.dotcms.rendering.velocity.directive.DotParseTest;
 import com.dotcms.rendering.velocity.servlet.VelocityServletIntegrationTest;
 import com.dotcms.rendering.velocity.viewtools.DotTemplateToolTest;
@@ -70,6 +77,7 @@ import com.dotcms.rendering.velocity.viewtools.FileToolTest;
 import com.dotcms.rendering.velocity.viewtools.JSONToolTest;
 import com.dotcms.rendering.velocity.viewtools.MessageToolTest;
 import com.dotcms.rendering.velocity.viewtools.XmlToolTest;
+import com.dotcms.rendering.velocity.viewtools.XsltToolTest;
 import com.dotcms.rendering.velocity.viewtools.content.StoryBlockMapTest;
 import com.dotcms.rendering.velocity.viewtools.content.StoryBlockTest;
 import com.dotcms.rest.BundlePublisherResourceIntegrationTest;
@@ -206,6 +214,7 @@ import com.dotmarketing.util.MaintenanceUtilTest;
 import com.dotmarketing.util.ResourceCollectorUtilTest;
 import com.dotmarketing.util.TestConfig;
 import com.dotmarketing.util.UtilMethodsITest;
+import com.dotmarketing.util.ZipUtilTest;
 import com.dotmarketing.util.contentlet.pagination.PaginatedContentletsIntegrationTest;
 import com.liferay.portal.language.LanguageUtilTest;
 import org.apache.velocity.tools.view.tools.CookieToolTest;
@@ -218,6 +227,9 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(MainBaseSuite.class)
 @SuiteClasses({
+        RulesAPIImplIntegrationTest.class,
+        ExperimentAPIImpIT.class,
+        ExperimentWebAPIImplIT.class,
         Task220825CreateVariantFieldTest.class,
         Task221007AddVariantIntoPrimaryKeyTest.class,
         ContentletWebAPIImplIntegrationTest.class, // moved to top because of failures on GHA
@@ -226,6 +238,7 @@ import org.junit.runners.Suite.SuiteClasses;
         StaticPublisherIntegrationTest.class,
         com.dotcms.publishing.PublisherAPIImplTest.class,
         SiteSearchJobImplTest.class,
+        XsltToolTest.class,
         PushPublishBundleGeneratorTest.class,
         LegacyShortyIdApiTest.class,
         RuleBundlerTest.class,
@@ -454,7 +467,6 @@ import org.junit.runners.Suite.SuiteClasses;
         VelocityServletIntegrationTest.class,
         DotAssetAPITest.class,
         DotAssetBaseTypeToContentTypeStrategyImplTest.class,
-        RulesAPIImplIntegrationTest.class,
         FileAssetAPIImplIntegrationTest.class,
         FileAssetFactoryIntegrationTest.class,
         UserResourceIntegrationTest.class,
@@ -615,6 +627,8 @@ import org.junit.runners.Suite.SuiteClasses;
         BayesianAPIImplTest.class,
         ContentletDependenciesTest.class,
         UtilMethodsITest.class,
+        StoryBlockAPITest.class,
+        UtilMethodsITest.class,
         Task220912UpdateCorrectShowOnMenuPropertyTest.class,
         PersonaActionletTest.class,
         SendRedirectActionletTest.class,
@@ -634,8 +648,13 @@ import org.junit.runners.Suite.SuiteClasses;
         UsersCountryConditionletTest.class,
         UsersPlatformConditionletTest.class,
         VisitorsCurrentURLConditionletTest.class,
-        VisitorsGeolocationConditionletTest.class
+        VisitorsGeolocationConditionletTest.class,
+        ManifestUtilTest.class,
+        ZipUtilTest.class
+
 })
 public class MainSuite {
 
 }
+
+
