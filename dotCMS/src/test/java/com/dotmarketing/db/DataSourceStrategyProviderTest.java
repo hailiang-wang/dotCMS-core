@@ -11,6 +11,8 @@ import org.mockito.Mockito;
 
 import javax.sql.DataSource;
 
+import java.lang.reflect.InvocationTargetException;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -53,7 +55,7 @@ public class DataSourceStrategyProviderTest {
     @UseDataProvider("testCases")
     @Test
     public void testGet(final String testCase)
-            throws IllegalAccessException, InstantiationException, ClassNotFoundException {
+            throws IllegalAccessException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException {
 
         final DataSourceStrategyProvider provider = Mockito.spy(DataSourceStrategyProvider.class);
         final SystemEnvironmentProperties properties = Mockito.mock(SystemEnvironmentProperties.class);

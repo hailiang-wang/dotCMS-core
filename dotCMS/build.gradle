@@ -417,9 +417,12 @@ task integrationTest(type: Test, dependsOn:['prepareIntegrationTests']) {
 
     // Check if we want to run the tests suite
     def singleTest = System.getProperty("test.single")
-    if (null != singleTest && singleTest == "com.dotcms.MainSuite"){
-        include "**/MainSuite.class"
+    println "Single test= ${singleTest}"
+    if (null != singleTest){
+        println "Running singleTest = "+singleTest
+        include singleTest.replace(".", "/")+".class"
     } else {
+        println "Running tests excluding **/MainSuite.class"
         exclude "**/MainSuite.class"
     }
 
