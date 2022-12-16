@@ -10,6 +10,8 @@ import com.dotmarketing.util.Constants;
 import com.dotmarketing.util.Logger;
 import com.dotmarketing.util.StringUtils;
 import com.dotmarketing.util.UtilMethods;
+
+import com.google.common.base.Suppliers;
 import com.liferay.util.JNDIUtil;
 import com.microsoft.sqlserver.jdbc.ISQLServerConnection;
 import io.vavr.control.Try;
@@ -23,6 +25,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.Supplier;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -36,34 +39,10 @@ public class DbConnectionFactory {
     public static final String POSTGRESQL = "PostgreSQL";
     public static final String ORACLE = "Oracle";
     public static final String MSSQL = "Microsoft SQL Server";
-
-    private DataSource defaultDataSource = null;
+    private static final Supplier<DataSource> defaultDataSourceSupplier= Suppliers.memoize(DbConnectionFactory::initializeDataSource)::get;
 
     private DbConnectionFactory() {
-        // Lazy load the default datasource from static inner class
-        try {
-            defaultDataSource = DataSourceStrategyProvider.getInstance().get();
-            addDatasourceToJNDIIfNeeded();
-        } catch (Throwable e) {
-            Logger.error(DbConnectionFactory.class,
-                    "---------- DBConnectionFactory: error getting dbconnection " + Constants.DATABASE_DEFAULT_DATASOURCE,
-                    e);
-            if(Config.getBooleanProperty("SYSTEM_EXIT_ON_STARTUP_FAILURE", true)){
-                e.printStackTrace();
-                System.exit(1);
-            }
 
-            throw new DotRuntimeException(e.toString(),e);
-
-        }
-    }
-
-    private static class DbConnectionFactoryHolder {
-        private static final DbConnectionFactory INSTANCE = new DbConnectionFactory();
-    }
-
-    private static DbConnectionFactory getInstance() {
-        return DbConnectionFactoryHolder.INSTANCE;
     }
 
     /**
@@ -126,25 +105,33 @@ public class DbConnectionFactory {
         new ThreadLocal<>();
 
     public static DataSource getDataSource() {
-        return DbConnectionFactory.getInstance().getInstanceDataSource();
+        return defaultDataSourceSupplier.get();
     }
 
-
-
-    private DataSource getInstanceDataSource() {
-        return defaultDataSource;
+    private static DataSource initializeDataSource() {
+        DataSource ds;
+        try {
+            ds = DataSourceStrategyProvider.getInstance().get();
+            addDatasourceToJNDIIfNeeded(ds);
+            return ds;
+        } catch (Throwable e) {
+            Logger.error(DbConnectionFactory.class,
+                    "---------- DBConnectionFactory: error getting dbconnection " + Constants.DATABASE_DEFAULT_DATASOURCE,
+                    e);
+            throw new DotRuntimeException(e.toString(),e);
+        }
     }
 
     /**
      * Saves a datasource in JNDI in case <b>ADD_DATASOURCE_TO_JNDI</b> is set to true.
      * By default, <b>ADD_DATASOURCE_TO_JNDI</b> is set to false
      */
-    private void addDatasourceToJNDIIfNeeded() {
+    private static void addDatasourceToJNDIIfNeeded(DataSource ds) {
         try {
             if (Config.getBooleanProperty("ADD_DATASOURCE_TO_JNDI", false)) {
                 final Context context = new InitialContext();
                 context.createSubcontext("jdbc");
-                context.bind(DATABASE_DEFAULT_DATASOURCE, defaultDataSource);
+                context.bind(DATABASE_DEFAULT_DATASOURCE, ds);
                 Logger.info(DbConnectionFactory.class,
                         "---------- DBConnectionFactory:Datasource added to JNDI context ---------------");
             }
