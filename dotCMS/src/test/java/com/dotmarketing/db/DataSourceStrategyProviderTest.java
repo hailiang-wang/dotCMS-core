@@ -135,7 +135,7 @@ public class DataSourceStrategyProviderTest {
     @UseDataProvider("testCases")
     @Test
     public void testGetFallback(final String testCase)
-            throws IllegalAccessException, InstantiationException, ClassNotFoundException {
+            throws IllegalAccessException, InstantiationException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException {
 
         final DataSourceStrategyProvider provider = Mockito.spy(DataSourceStrategyProvider.class);
         final SystemEnvironmentProperties properties = Mockito.mock(SystemEnvironmentProperties.class);
