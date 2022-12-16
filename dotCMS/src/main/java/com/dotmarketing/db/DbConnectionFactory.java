@@ -40,7 +40,22 @@ public class DbConnectionFactory {
     private DataSource defaultDataSource = null;
 
     private DbConnectionFactory() {
-        // singleton
+        // Lazy load the default datasource from static inner class
+        try {
+            defaultDataSource = DataSourceStrategyProvider.getInstance().get();
+            addDatasourceToJNDIIfNeeded();
+        } catch (Throwable e) {
+            Logger.error(DbConnectionFactory.class,
+                    "---------- DBConnectionFactory: error getting dbconnection " + Constants.DATABASE_DEFAULT_DATASOURCE,
+                    e);
+            if(Config.getBooleanProperty("SYSTEM_EXIT_ON_STARTUP_FAILURE", true)){
+                e.printStackTrace();
+                System.exit(1);
+            }
+
+            throw new DotRuntimeException(e.toString(),e);
+
+        }
     }
 
     private static class DbConnectionFactoryHolder {
@@ -117,23 +132,6 @@ public class DbConnectionFactory {
 
 
     private DataSource getInstanceDataSource() {
-
-        try {
-            defaultDataSource = DataSourceStrategyProvider.getInstance().get();
-            addDatasourceToJNDIIfNeeded();
-        } catch (Throwable e) {
-            Logger.error(DbConnectionFactory.class,
-                    "---------- DBConnectionFactory: error getting dbconnection " + Constants.DATABASE_DEFAULT_DATASOURCE,
-                    e);
-            if(Config.getBooleanProperty("SYSTEM_EXIT_ON_STARTUP_FAILURE", true)){
-                e.printStackTrace();
-                System.exit(1);
-            }
-
-            throw new DotRuntimeException(e.toString(),e);
-
-        }
-
         return defaultDataSource;
     }
 
