@@ -131,8 +131,6 @@ const parallelCollections = JSON.parse(core.getInput('parallel_collections'));
 const parallelCollection = core.getInput('parallel_collection');
 const tests = core.getInput('tests');
 const exportReport = core.getBooleanInput('export_report');
-const ghcrToken = core.getInput('ghcr_token');
-const githubUser = core.getInput('github_user');
 const includeAnalytics = core.getBooleanInput('include_analytics');
 const cicdFolder = path.join(projectRoot, 'cicd');
 const resourcesFolder = path.join(cicdFolder, 'resources', 'postman');
@@ -228,8 +226,6 @@ const startDeps = () => __awaiter(void 0, void 0, void 0, function* () {
         yield waitFor(160, 'Analytics Infrastructure');
         yield warmUpAnalytics();
     }
-    yield execCmd(toCommand('echo', [ghcrToken, '|', 'docker', 'login', 'ghcr.io', '-u', githubUser, '--password-stdin']));
-    yield execCmd(toCommand('docker', ['pull', builtImageName]));
     execCmdAsync(toCommand('docker-compose', ['-f', 'open-distro-compose.yml', '-f', `${dbType}-compose.yml`, '-f', 'dotcms-compose.yml', 'up'], dockerFolder, DEPS_ENV));
 });
 /**

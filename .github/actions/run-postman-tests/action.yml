@@ -68,12 +68,6 @@ inputs:
     type: boolean
     required: false
     default: 'false'
-  ghcr_token:
-    description: 'GHCR.io access token'
-    required: true
-  github_user:
-    description: 'Github user'
-    required: true
   include_analytics:
     description: 'Include Analytics infrastructure flag'
     type: boolean

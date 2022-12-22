@@ -329,6 +329,13 @@ jobs:
         name: Read CICD local library
         run: source ${GITHUB_WORKSPACE}/cicd/local-env.sh
         if: success()
+      - id: docker-login
+        name: Login to GHCR
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ env.GITHUB_USER }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - id: build-dotcms-image
         name: Build DotCMS docker image
         uses: ./.github/actions/build-docker-image
@@ -386,6 +393,13 @@ jobs:
         name: Read CICD local library
         run: source ${GITHUB_WORKSPACE}/cicd/local-env.sh
         if: success()
+      - id: docker-login
+        name: Login to GHCR
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ env.GITHUB_USER }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - id: run-postman-tests
         name: Run Postman Tests
         timeout-minutes: 70
@@ -396,8 +410,6 @@ jobs:
           tests: ${{ needs.repo-metadata-job.outputs.commit_message }}
           parallel_collection: ${{ matrix.parallel_collection }}
           export_report: ${{ env.PUBLISH_MODE == 'ALL' || env.PUBLISH_MODE == 'RESULTS' }}
-          ghcr_token: ${{ secrets.GITHUB_TOKEN }}
-          github_user: ${{ env.GITHUB_USER }}
       - id: postman-tests-comment
         name: Postman Test Comment
         uses: EnricoMi/publish-unit-test-result-action@v1

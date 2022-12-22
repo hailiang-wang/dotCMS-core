@@ -62,21 +62,8 @@ const dockerBuildCmd = (): Command => {
 
 const dockerPushCmd = (): Command => {
   return {
-    cmd: 'echo',
-    args: [
-      ghcrToken,
-      '|',
-      'docker',
-      'login',
-      'ghcr.io',
-      '-u',
-      githubUser,
-      '--password-stdin',
-      '&&',
-      'docker',
-      'push',
-      imageName
-    ]
+    cmd: 'docker',
+    args: ['push', imageName]
   }
 }
 

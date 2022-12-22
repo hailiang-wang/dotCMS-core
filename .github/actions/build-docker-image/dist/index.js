@@ -80,16 +80,7 @@ const execute = () => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.execute = execute;
 const dockerBuildCmd = () => {
-    const args = [
-        'build',
-        '-t',
-        imageName,
-        '--build-arg',
-        'BUILD_FROM=COMMIT',
-        '--build-arg',
-        `BUILD_ID=${buildId}`,
-        '.'
-    ];
+    const args = ['build', '-t', imageName, '--build-arg', 'BUILD_FROM=COMMIT', '--build-arg', `BUILD_ID=${buildId}`, '.'];
     return {
         cmd: 'docker',
         args,
@@ -98,21 +89,8 @@ const dockerBuildCmd = () => {
 };
 const dockerPushCmd = () => {
     return {
-        cmd: 'echo',
-        args: [
-            ghcrToken,
-            '|',
-            'docker',
-            'login',
-            'ghcr.io',
-            '-u',
-            githubUser,
-            '--password-stdin',
-            '&&',
-            'docker',
-            'push',
-            imageName
-        ]
+        cmd: 'docker',
+        args: ['push', imageName]
     };
 };
 /**

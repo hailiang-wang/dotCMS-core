@@ -15,8 +15,6 @@ const parallelCollections: ParallelCollections[] = JSON.parse(core.getInput('par
 const parallelCollection = core.getInput('parallel_collection')
 const tests = core.getInput('tests')
 const exportReport = core.getBooleanInput('export_report')
-const ghcrToken = core.getInput('ghcr_token')
-const githubUser = core.getInput('github_user')
 const includeAnalytics = core.getBooleanInput('include_analytics')
 const cicdFolder = path.join(projectRoot, 'cicd')
 const resourcesFolder = path.join(cicdFolder, 'resources', 'postman')
@@ -151,9 +149,6 @@ const startDeps = async () => {
     await waitFor(160, 'Analytics Infrastructure')
     await warmUpAnalytics()
   }
-
-  await execCmd(toCommand('echo', [ghcrToken, '|', 'docker', 'login', 'ghcr.io', '-u', githubUser, '--password-stdin']))
-  await execCmd(toCommand('docker', ['pull', builtImageName]))
 
   execCmdAsync(
     toCommand(
