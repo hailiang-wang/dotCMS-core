@@ -46,8 +46,6 @@ const buildId = core.getInput('build_id');
 const imageName = core.getInput('image_name');
 const dockerPath = core.getInput('docker_path');
 const push = core.getBooleanInput('push');
-const ghcrToken = core.getInput('ghcr_token');
-const githubUser = core.getInput('github_user');
 /**
  * Based on build_id parameter, builds a DotCMS Docker image
  *
@@ -62,14 +60,6 @@ const execute = () => __awaiter(void 0, void 0, void 0, function* () {
     }
     core.setOutput('built_image_name', imageName);
     if (push) {
-        if (!ghcrToken) {
-            core.warning(`No GHRC Token was provided, ignoring pushing`);
-            return rc;
-        }
-        if (!githubUser) {
-            core.warning(`No Github user was provided, ignoring pushing`);
-            return rc;
-        }
         cmd = dockerPushCmd();
         rc = yield execCmd(cmd);
         if (rc !== 0) {

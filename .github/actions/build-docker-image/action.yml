@@ -17,12 +17,6 @@ inputs:
     type: boolean
     required: false
     default: 'false'
-  ghcr_token:
-    description: 'GHCR.io access token'
-    required: false
-  github_user:
-    description: 'Github user'
-    required: false
 outputs:
   built_image_name:
     description: 'Built image name'

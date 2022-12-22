@@ -343,8 +343,6 @@ jobs:
           build_id: ${{ env.BUILD_ID }}
           image_name: ghcr.io/dotcms/dotcms:cicd-${{ env.BUILD_HASH }}
           push: true
-          ghcr_token: ${{ secrets.GITHUB_TOKEN }}
-          github_user: ${{ env.GITHUB_USER }}
       - id: github-init-test-results
         name: Github init tests results
         uses: ./.github/actions/publish-test-results
