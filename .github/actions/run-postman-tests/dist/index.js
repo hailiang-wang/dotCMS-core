@@ -229,6 +229,7 @@ const startDeps = () => __awaiter(void 0, void 0, void 0, function* () {
         yield warmUpAnalytics();
     }
     yield execCmd(toCommand('echo', [ghcrToken, '|', 'docker', 'login', 'ghcr.io', '-u', githubUser, '--password-stdin']));
+    yield execCmd(toCommand('docker', ['pull', builtImageName]));
     execCmdAsync(toCommand('docker-compose', ['-f', 'open-distro-compose.yml', '-f', `${dbType}-compose.yml`, '-f', 'dotcms-compose.yml', 'up'], dockerFolder, DEPS_ENV));
 });
 /**

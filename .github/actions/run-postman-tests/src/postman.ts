@@ -153,6 +153,7 @@ const startDeps = async () => {
   }
 
   await execCmd(toCommand('echo', [ghcrToken, '|', 'docker', 'login', 'ghcr.io', '-u', githubUser, '--password-stdin']))
+  await execCmd(toCommand('docker', ['pull', builtImageName]))
 
   execCmdAsync(
     toCommand(

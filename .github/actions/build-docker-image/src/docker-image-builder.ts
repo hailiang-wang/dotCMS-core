@@ -52,17 +52,7 @@ export const execute = async (): Promise<number> => {
 }
 
 const dockerBuildCmd = (): Command => {
-  const args = [
-    'build',
-    '--no-cache',
-    '-t',
-    imageName,
-    '--build-arg',
-    'BUILD_FROM=COMMIT',
-    '--build-arg',
-    `BUILD_ID=${buildId}`,
-    '.'
-  ]
+  const args = ['build', '-t', imageName, '--build-arg', 'BUILD_FROM=COMMIT', '--build-arg', `BUILD_ID=${buildId}`, '.']
   return {
     cmd: 'docker',
     args,

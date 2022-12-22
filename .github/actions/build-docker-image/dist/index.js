@@ -82,7 +82,6 @@ exports.execute = execute;
 const dockerBuildCmd = () => {
     const args = [
         'build',
-        '--no-cache',
         '-t',
         imageName,
         '--build-arg',
