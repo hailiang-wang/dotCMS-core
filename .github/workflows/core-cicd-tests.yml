@@ -335,7 +335,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ env.GITHUB_USER }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.GHCR_TOKEN }}
       - id: build-dotcms-image
         name: Build DotCMS docker image
         uses: ./.github/actions/build-docker-image
@@ -397,7 +397,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ env.GITHUB_USER }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.GHCR_TOKEN }}
       - id: run-postman-tests
         name: Run Postman Tests
         timeout-minutes: 70
